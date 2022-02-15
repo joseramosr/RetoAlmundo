@@ -1,0 +1,51 @@
+group 'co.com.cobre.certificacion'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath('net.serenity-bdd:serenity-gradle-plugin:2.3.1')
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation 'net.serenity-bdd:serenity-core:2.1.10',
+            'net.serenity-bdd:serenity-junit:2.1.10',
+            'net.serenity-bdd:serenity-cucumber:1.9.49',
+            'net.serenity-bdd:serenity-screenplay:2.1.10',
+            'net.serenity-bdd:serenity-screenplay-webdriver:2.1.10'
+            'net.serenity-bdd:serenity-ensure:2.1.10'
+    testImplementation 'net.serenity-bdd:serenity-core:2.1.10',
+            'net.serenity-bdd:serenity-junit:2.1.10',
+            'net.serenity-bdd:serenity-ensure:2.1.10',
+            'org.junit.jupiter:junit-jupiter-api:5.6.0',
+            'org.assertj:assertj-core:3.15.0',
+            'org.slf4j:slf4j-simple:1.7.30'
+}
+
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)
+
+test{
+    maxParallelForks=2
+}
